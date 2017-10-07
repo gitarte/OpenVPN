@@ -22,9 +22,9 @@ Then customize a vars file ```/etc/openvpn/easy-rsa/vars``` Pay attention for tw
 * KEY_NAME: enter a word ```server``` here. Otherwise the rest of this recipe wont work, because it references to this
 * KEY_CN: enter the domain name that resolves to your server's IP address
 ```bash
-export KEY_COUNTRY="PL"
-export KEY_PROVINCE="Silesia"
-export KEY_CITY="Katowice"
+export KEY_COUNTRY="Your 2 Letters Country Code"
+export KEY_PROVINCE="Your Province Name"
+export KEY_CITY="Your City Name"
 export KEY_ORG="Your Organization Name"
 export KEY_EMAIL="you@yourmail.org"
 export KEY_OU="Your Organization Unit"
