@@ -43,9 +43,9 @@ source ./vars
 cd /etc/openvpn/easy-rsa/keys
 cp dh2048.pem ca.crt server.crt server.key /etc/openvpn
 ```
-### Build the certs for the clients
+### Build the certs for clients
 Here the clients are called simply ```client1``` and ```client2```. Consider a meaningfull names instead.
-To generate cert files for a client you just do:
+To generate cert files for clients you just do the following. Leave defaults and agree with all questions.
 ```bash
 cd /etc/openvpn/easy-rsa
 ./build-key client1
@@ -53,18 +53,20 @@ cd /etc/openvpn/easy-rsa
 ```
 You may need to load variables before issuing ```build-key``` command:
 ```bash
-./build-key client1
+source ./vars
 ```
+Do not issue ```./clean-all``` unless your intention is to start all over again.
+
 ### Ensure that clients will use fixed IP addresses
-Do the following. Pay attention for the name of created file. It must match the name of Common Name given while creation of client cert files
+Pay attention for the name of files created bellow. It must match the name of Common Name given while creation of client cert files
 ```bash
 echo "ifconfig-push 10.8.0.10 10.8.0.1" > /etc/openvpn/ccd/client1
 echo "ifconfig-push 10.8.0.20 10.8.0.1" > /etc/openvpn/ccd/client2
 ```
 You need also to prevent any possible IP conflicts. To do so ensure, that every client has its own IP assigned in ipp.txt
 ```bash
-echo "client1,10.8.0.10" > /etc/openvpn/ipp.txt
-echo "client2,10.8.0.20" > /etc/openvpn/ipp.txt
+echo "client1,10.8.0.10" >> /etc/openvpn/ipp.txt
+echo "client2,10.8.0.20" >> /etc/openvpn/ipp.txt
 ```
 ### Prepare server's config
 ```sh
