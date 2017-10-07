@@ -83,7 +83,7 @@ dh dh2048.pem
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 client-config-dir /etc/openvpn/ccd
-push "redirect-gateway def1 bypass-dhcp"
+push "def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
 keepalive 10 120
