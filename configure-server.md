@@ -51,6 +51,10 @@ cd /etc/openvpn/easy-rsa
 ./build-key client1
 ./build-key client2
 ```
+You may need to load variables before issuing ```build-key``` command:
+```bash
+./build-key client1
+```
 ### Ensure that clients will use fixed IP addresses
 Do the following. Pay attention for the name of created file. It must match the name of Common Name given while creation of client cert files
 ```bash
