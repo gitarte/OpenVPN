@@ -10,20 +10,21 @@
 
 ### Build the certs for the client and ensure that the client will use fixed IP address
 This steps have to be done on properly configured server side. Follow this [recipe]. 
-### Install OpenVPN on your client
+### Install OpenVPN on each client
 ```bash
 apt -y install openvpn
 ```
 ### Download cert files from the server
 Pay attention for the actual client you are working on. Here is an example for ```client1```
 ```bash
- scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/keys/ca.cert  /etc/openvpn/
- scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/keys/client1* /etc/openvpn/
+ scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/keys/ca.cert     /etc/openvpn/
+ scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/keys/client1.key /etc/openvpn/
+ scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/keys/client1.crt /etc/openvpn/
 ```
 ### Generate client's config
 Again here the example is for ```client1``` The name of config file ```/etc/openvpn/client.conf``` should however be the same on each client machine.
 ```bash
-cat <<EOT >> /etc/openvpn/client.conf
+cat <<EOF >> /etc/openvpn/client.conf
 client
 port 2193
 remote centos.artgaw.pl
@@ -39,6 +40,7 @@ key-direction 1
 ca   ca.crt
 key  client1.key
 cert client1.crt
+EOF
 ```
 ### Deal with the service and enjoy
 ```bash
