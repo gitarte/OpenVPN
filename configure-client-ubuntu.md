@@ -16,7 +16,7 @@ apt -y install openvpn
 ### Download cert files from the server
 Pay attention for the actual client you are working on. Here is an example for ```client1```
 ```bash
- scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/keys/ca.cert     /etc/openvpn/
+ scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/keys/ca.crt      /etc/openvpn/
  scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/keys/client1.key /etc/openvpn/
  scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/keys/client1.crt /etc/openvpn/
 ```
