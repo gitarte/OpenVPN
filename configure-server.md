@@ -1,11 +1,10 @@
 ### The goal
-* server OS         ```CentOS7```
-* client OS         ```Ubuntu 16.04```
-* OpenVPN server    ```centos.artgaw.pl```
-* virtual network   ```10.8.0.0/24```
-* server  IP        ```10.8.0.1```
-* client1 IP        ```10.8.0.10```
-* client2 IP        ```10.8.0.20```
+* OpenVPN server  ```centos.artgaw.pl```
+* virtual network ```10.8.0.0/24```
+* server          ```IP:10.8.0.1  OS:CentOS7```
+* client1         ```IP:10.8.0.10 OS:Ubuntu 16.04```
+* client2         ```IP:10.8.0.20 OS:Ubuntu 16.04```
+* client3         ```IP:10.8.0.30 OS:Windows 10```
 
 ### Install and prepare all necessary software
 ```bash
@@ -44,12 +43,13 @@ cd /etc/openvpn/easy-rsa/keys
 cp dh2048.pem ca.crt server.crt server.key /etc/openvpn
 ```
 ### Build the certs for clients
-Here the clients are called simply ```client1``` and ```client2```. Consider a meaningfull names instead.
+Here the clients are called simply ```client1```, ```client2``` and ```client3```. Consider a meaningfull names instead.
 To generate cert files for clients you just do the following. Leave defaults and agree with all questions.
 ```bash
 cd /etc/openvpn/easy-rsa
 ./build-key client1
 ./build-key client2
+./build-key client3
 ```
 You may need to load variables before issuing ```build-key``` command:
 ```bash
@@ -62,11 +62,13 @@ Pay attention for the name of files created bellow. It must match the name of Co
 ```bash
 echo "ifconfig-push 10.8.0.10 10.8.0.1" > /etc/openvpn/ccd/client1
 echo "ifconfig-push 10.8.0.20 10.8.0.1" > /etc/openvpn/ccd/client2
+echo "ifconfig-push 10.8.0.30 10.8.0.1" > /etc/openvpn/ccd/client3
 ```
 You need also to prevent any possible IP conflicts. To do so ensure, that every client has its own IP assigned in ipp.txt
 ```bash
 echo "client1,10.8.0.10" >> /etc/openvpn/ipp.txt
 echo "client2,10.8.0.20" >> /etc/openvpn/ipp.txt
+echo "client3,10.8.0.30" >> /etc/openvpn/ipp.txt
 ```
 ### Prepare server's config
 ```sh
