@@ -6,7 +6,7 @@
 * client2         ```IP:10.8.0.20 OS:Ubuntu 16.04```
 * client3         ```IP:10.8.0.30 OS:Windows 10```
 
-### Install and prepare all necessary software
+### Install all necessary software
 ```bash
 yum -y install openvpn easy-rsa iptables-services
 ```
