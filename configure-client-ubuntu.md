@@ -1,11 +1,10 @@
 ### The goal
-* server OS         ```CentOS7```
-* client OS         ```Ubuntu 16.04```
-* OpenVPN server    ```centos.artgaw.pl```
-* virtual network   ```10.8.0.0/24```
-* server  IP        ```10.8.0.1```
-* client1 IP        ```10.8.0.10```
-* client2 IP        ```10.8.0.20```
+* OpenVPN server  ```centos.artgaw.pl```
+* virtual network ```10.8.0.0/24```
+* server          ```IP:10.8.0.1  OS:CentOS7```
+* client1         ```IP:10.8.0.10 OS:Ubuntu 16.04```
+* client2         ```IP:10.8.0.20 OS:Ubuntu 16.04```
+* client3         ```IP:10.8.0.30 OS:Windows 10```
 
 
 ### Build the certs for the client and ensure that the client will use fixed IP address
