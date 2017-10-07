@@ -33,11 +33,6 @@ source ./vars
 cd /etc/openvpn/easy-rsa/keys
 cp dh2048.pem ca.crt server.crt server.key /etc/openvpn
 ```
-### Build the certs for the client
-```bash
-cd /etc/openvpn/easy-rsa
-./build-key client
-```
 ### Prepare server's config
 ```sh
 cat <<EOT >> /etc/openvpn/server.conf
@@ -78,36 +73,4 @@ iptables-save > /etc/sysconfig/iptables-config
 iptables-save > /etc/sysconfig/iptables
 
 reboot
-```
-### Generate client's config
-```sh
-cd /root/keys
-cat <<EOT >> arga-1-zfs.ovpn
-client
-port 2193
-remote 86.105.51.161
-comp-lzo yes
-dev tun
-proto udp
-nobind
-auth-nocache
-persist-key
-persist-tun
-verb 2
-key-direction 1
-<ca>
-EOT
-cat ca.crt >> arga-1-zfs.ovpn 
-cat <<EOT >> arga-1-zfs.ovpn
-</ca>
-<cert>
-EOT
-cat arga-1-zfs.crt >> arga-1-zfs.ovpn 
-cat <<EOT >> arga-1-zfs.ovpn
-</cert>
-<key>
-EOT
-cat arga-1-zfs.key >> arga-1-zfs.ovpn 
-echo '</key>' >> arga-1-zfs.ovpn 
-systemctl restart openvpn@server.service
 ```
