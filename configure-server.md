@@ -40,6 +40,7 @@ port 2193
 proto udp
 dev tun
 ca ca.crt
+key  server.key
 cert server.crt
 dh dh2048.pem
 server 10.8.0.0 255.255.255.0
@@ -64,6 +65,7 @@ systemctl disable firewalld
 systemctl stop    firewalld
 systemctl enable  iptables
 systemctl start   iptables
+systemctl enable  openvpn@server.service
 
 echo "net.ipv4.ip_forward = 1" > /etc/sysctl.conf
 
