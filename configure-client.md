@@ -1,7 +1,7 @@
 ### The goal
 * server OS         ```CentOS7```
 * client OS         ```Ubuntu 16.04```
-* OpenVPN server at ```centos.artgaw.pl```
+* OpenVPN server    ```centos.artgaw.pl```
 * virtual network   ```10.8.0.0/24```
 * server  IP        ```10.8.0.1```
 * client1 IP        ```10.8.0.10```
