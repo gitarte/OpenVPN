@@ -37,7 +37,8 @@ persist-key
 persist-tun
 verb 2
 key-direction 1
-
+status     openvpn-status.log
+log-append openvpn.log
 EOF
 ```
 ### Deal with the service and enjoy
