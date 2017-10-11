@@ -2,9 +2,9 @@
 * OpenVPN server  ```centos.artgaw.pl```
 * virtual network ```10.8.0.0/24```
 * server          ```IP:10.8.0.1  OS:CentOS7```
-* client1         ```IP:10.8.0.11 OS:Ubuntu 16.04```
-* client2         ```IP:10.8.0.12 OS:Ubuntu 16.04```
-* client3         ```IP:10.8.0.13 OS:Windows 10```
+* client1         ```IP:10.8.0.10 OS:Ubuntu 16.04```
+* client2         ```IP:10.8.0.20 OS:Ubuntu 16.04```
+* client3         ```IP:10.8.0.30 OS:Windows 10```
 
 ### Install all necessary software
 ```bash
@@ -60,40 +60,40 @@ Do not issue ```./clean-all``` unless your intention is to start all over again.
 ### Ensure that clients will use fixed IP addresses
 Pay attention for the name of files created bellow. It must match the name of Common Name given while creation of client cert files
 ```bash
-echo "ifconfig-push 10.8.0.11 10.8.0.1" > /etc/openvpn/ccd/client1
-echo "ifconfig-push 10.8.0.12 10.8.0.1" > /etc/openvpn/ccd/client2
-echo "ifconfig-push 10.8.0.13 10.8.0.1" > /etc/openvpn/ccd/client3
+echo "ifconfig-push 10.8.0.10 255.255.255.0" > /etc/openvpn/ccd/client1
+echo "ifconfig-push 10.8.0.20 255.255.255.0" > /etc/openvpn/ccd/client2
+echo "ifconfig-push 10.8.0.30 255.255.255.0" > /etc/openvpn/ccd/client3
 ```
 You need also to prevent any possible IP conflicts. To do so ensure, that every client has its own IP assigned in ipp.txt
 ```bash
-echo "client1,10.8.0.11" >> /etc/openvpn/ipp.txt
-echo "client2,10.8.0.12" >> /etc/openvpn/ipp.txt
-echo "client3,10.8.0.13" >> /etc/openvpn/ipp.txt
+echo "client1,10.8.0.10" >> /etc/openvpn/ipp.txt
+echo "client2,10.8.0.20" >> /etc/openvpn/ipp.txt
+echo "client3,10.8.0.30" >> /etc/openvpn/ipp.txt
 ```
 ### Prepare server's config
 ```sh
 cat <<EOT >> /etc/openvpn/server.conf
-port 2193
-proto udp
-dev tun
-ca   ca.crt
-key  server.key
-cert server.crt
-dh dh2048.pem
+port   2193
+proto  udp
+dev    tap
+ca     ca.crt
+key    server.key
+cert   server.crt
+dh     dh2048.pem
 server 10.8.0.0 255.255.255.0
+push   "bypass-dhcp"
+push   "dhcp-option DNS 8.8.8.8"
+push   "dhcp-option DNS 8.8.4.4"
 ifconfig-pool-persist ipp.txt
-client-config-dir /etc/openvpn/ccd
-push "bypass-dhcp"
-push "dhcp-option DNS 8.8.8.8"
-push "dhcp-option DNS 8.8.4.4"
+client-config-dir     /etc/openvpn/ccd
 keepalive 10 120
 comp-lzo
-user nobody
+user  nobody
 group nobody
 persist-key
 persist-tun
-status openvpn-status.log
-log-append  openvpn.log
+status     openvpn-status.log
+log-append openvpn.log
 verb 3
 EOT
 ```
