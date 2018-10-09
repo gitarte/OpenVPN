@@ -33,10 +33,10 @@ remote           centos.artgaw.pl
 #redirect-gateway def1
 comp-lzo         yes
 verb             3
-ca               ca.crt
-key              client1.key
-cert             client1.crt
-tls-auth         ta.key 1
+ca               /etc/openvpn/ca.crt
+key              /etc/openvpn/client1.key
+cert             /etc/openvpn/client1.crt
+tls-auth         /etc/openvpn/ta.key 1
 remote-cert-tls  server
 ns-cert-type     server
 key-direction    1
