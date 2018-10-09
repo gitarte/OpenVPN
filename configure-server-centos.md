@@ -114,16 +114,16 @@ log-append openvpn.log
 verb       3
 
 # Certs
-ca       ca.crt
-key      server.key
-cert     server.crt
-dh       dh.pem
-tls-auth ta.key 0
+ca         /etc/openvpn/ca.crt
+key        /etc/openvpn/server.key
+cert       /etc/openvpn/server.crt
+dh         /etc/openvpn/dh.pem
+crl-verify /etc/openvpn/crl.pem
+tls-auth   /etc/openvpn/ta.key 0
 
 # Ciphers and Hardening
 reneg-sec       0
 remote-cert-tls client
-crl-verify      crl.pem
 tls-version-min 1.2
 cipher          AES-256-CBC
 auth            SHA512
