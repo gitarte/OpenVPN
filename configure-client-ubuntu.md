@@ -2,8 +2,8 @@
 * OpenVPN server  ```centos.artgaw.pl```
 * virtual network ```10.8.0.0/24```
 * server          ```IP:10.8.0.1  OS:CentOS7```
-* client1         ```IP:10.8.0.10 OS:Ubuntu 16.04```
-* client2         ```IP:10.8.0.20 OS:Ubuntu 16.04```
+* client1         ```IP:10.8.0.10 OS:Ubuntu 18.04```
+* client2         ```IP:10.8.0.20 OS:Ubuntu 18.04```
 * client3         ```IP:10.8.0.30 OS:Windows 10```
 ### Build the certs for the client and ensure that the client will use fixed IP address
 This steps have to be done on properly configured server side. Follow this [recipe]. 
