@@ -15,7 +15,7 @@ First prepare the tools
 ```sh
 mkdir -p /etc/openvpn/easy-rsa/keys
 mkdir    /etc/openvpn/ccd
-cp -rf   /usr/share/easy-rsa/3.0/*               /etc/openvpn/easy-rsa
+cp -rf   /usr/share/easy-rsa/2.0/*               /etc/openvpn/easy-rsa
 cp       /etc/openvpn/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf
 ```
 Then customize a vars file ```/etc/openvpn/easy-rsa/vars``` Pay attention for two fildes:
