@@ -15,7 +15,7 @@ First prepare the tools
 ```sh
 mkdir -p /etc/openvpn/easy-rsa/keys
 mkdir    /etc/openvpn/ccd
-cp -rf   /usr/share/easy-rsa/2.0/*               /etc/openvpn/easy-rsa
+cp -rf   /usr/share/easy-rsa/3.0/*               /etc/openvpn/easy-rsa
 cp       /etc/openvpn/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf
 ```
 Then customize a vars file ```/etc/openvpn/easy-rsa/vars``` Pay attention for two fildes:
@@ -35,10 +35,9 @@ export KEY_CN="centos.artgaw.pl"
 ```bash
 cd /etc/openvpn/easy-rsa
 source ./vars
-./clean-all
-./build-ca
-./build-key-server server
-./build-dh
+./easyrsa  build-ca
+./easyrsa  build-server-full server
+./easyrsa  gen-dh
 cd /etc/openvpn/easy-rsa/keys
 cp dh2048.pem ca.crt server.crt server.key /etc/openvpn
 ```
@@ -47,9 +46,9 @@ Here the clients are called simply ```client1```, ```client2``` and ```client3``
 To generate cert files for clients you just do the following. Leave defaults and agree with all questions.
 ```bash
 cd /etc/openvpn/easy-rsa
-./build-key client1
-./build-key client2
-./build-key client3
+./easyrsa build-client-full client1
+./easyrsa build-client-full client2
+./easyrsa build-client-full client3
 ```
 You may need to load variables before issuing ```build-key``` command:
 ```bash
