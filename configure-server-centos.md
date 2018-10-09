@@ -60,9 +60,28 @@ To generate cert files for clients you just do the following. Leave defaults and
 ```bash
 cd /etc/openvpn/easy-rsa
 source ./vars
+
 ./easyrsa build-client-full client1 [nopass]
 ./easyrsa build-client-full client2 [nopass]
 ./easyrsa build-client-full client3 [nopass]
+
+mkdir ./client1
+cp ./pki/ca.crt              ./client1/ca.crt
+cp ./pki/issued/client1.crt  ./client1/client.crt
+cp ./pki/private/client1.key ./client1/client.key
+cp ./pki/ta.key              ./client1/ta.key
+
+mkdir ./client2
+cp ./pki/ca.crt              ./client2/ca.crt
+cp ./pki/issued/client2.crt  ./client2/client.crt
+cp ./pki/private/client2.key ./client2/client.key
+cp ./pki/ta.key              ./client2/ta.key
+
+mkdir ./client3
+cp ./pki/ca.crt              ./client3/ca.crt
+cp ./pki/issued/client3.crt  ./client3/client.crt
+cp ./pki/private/client3.key ./client3/client.key
+cp ./pki/ta.key              ./client3/ta.key
 ```
 ### Ensure that clients will use fixed IP addresses
 Pay attention for the name of files created bellow. It must match the name of Common Name given while creation of client cert files
