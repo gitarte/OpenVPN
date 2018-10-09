@@ -26,7 +26,7 @@ pull
 nobind
 persist-key
 persist-tun
-dev              tun
+dev              tap
 proto            udp
 port             2193
 remote           centos.artgaw.pl
