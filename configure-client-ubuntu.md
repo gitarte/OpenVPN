@@ -14,31 +14,38 @@ apt -y install openvpn
 ### Download cert files from the server
 Pay attention for the actual client you are working on. Here is an example for ```client1```
 ```bash
- scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/keys/ca.crt      /etc/openvpn/
- scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/keys/client1.key /etc/openvpn/
- scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/keys/client1.crt /etc/openvpn/
+ scp root@centos.artgaw.pl:/etc/openvpn/easy-rsa/client1/* /etc/openvpn/
 ```
 ### Generate client's config
 Again here the example is for ```client1``` The name of config file ```/etc/openvpn/client.conf``` should however be the same on each client machine.
 ```bash
 cat <<EOF >> /etc/openvpn/client.conf
 client
-port     2193
-remote   centos.artgaw.pl
-proto    udp
-dev      tap
-ca       ca.crt
-key      client1.key
-cert     client1.crt
-comp-lzo yes
+tls-client
+pull
 nobind
-auth-nocache
 persist-key
 persist-tun
-verb 2
-key-direction 1
-status     openvpn-status.log
-log-append openvpn.log
+dev              tun
+proto            udp
+port             2193
+remote           centos.artgaw.pl
+#redirect-gateway def1
+comp-lzo         yes
+verb             3
+ca               ca.crt
+key              client1.key
+cert             client1.crt
+tls-auth         ta.key 1
+remote-cert-tls  server
+ns-cert-type     server
+key-direction    1
+cipher           AES-256-CBC
+tls-version-min  1.2
+auth             SHA512
+tls-cipher       TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256:TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256
+status           openvpn-status.log
+log-append       openvpn.log
 EOF
 ```
 ### Deal with the service and enjoy
