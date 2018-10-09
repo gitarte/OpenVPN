@@ -34,8 +34,8 @@ remote           centos.artgaw.pl
 comp-lzo         yes
 verb             3
 ca               /etc/openvpn/ca.crt
-key              /etc/openvpn/client1.key
-cert             /etc/openvpn/client1.crt
+key              /etc/openvpn/client.key
+cert             /etc/openvpn/client.crt
 tls-auth         /etc/openvpn/ta.key 1
 remote-cert-tls  server
 ns-cert-type     server
