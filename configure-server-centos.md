@@ -98,31 +98,47 @@ echo "client3,10.8.0.30" >> /etc/openvpn/ipp.txt
 ```
 ### Prepare server's config
 ```sh
+# Basic
 cat <<EOT >> /etc/openvpn/server.conf
-port   2193
-proto  udp
-dev    tap
-ca     ca.crt
-key    server.key
-cert   server.crt
-dh     dh.pem
-tls-auth ta.key 0
-
-server 10.8.0.0 255.255.255.0
-push   "bypass-dhcp"
-push   "dhcp-option DNS 8.8.8.8"
-push   "dhcp-option DNS 8.8.4.4"
-ifconfig-pool-persist ipp.txt
-client-config-dir     /etc/openvpn/ccd
-keepalive 10 120
-comp-lzo
-user  nobody
-group nobody
 persist-key
 persist-tun
+comp-lzo
+port       2193
+proto      udp
+dev        tap
+keepalive  10 120
+user       nobody
+group      nobody
 status     openvpn-status.log
 log-append openvpn.log
-verb 3
+verb       3
+
+# Certs
+ca       ca.crt
+key      server.key
+cert     server.crt
+dh       dh.pem
+tls-auth ta.key 0
+
+# Ciphers and Hardening
+reneg-sec       0
+remote-cert-tls client
+crl-verify      crl.pem
+tls-version-min 1.2
+cipher          AES-256-CBC
+auth            SHA512
+tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256:TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256
+
+# IP pool
+server                10.8.0.0 255.255.255.0
+topology              subnet
+ifconfig-pool-persist ipp.txt
+client-config-dir     /etc/openvpn/ccd
+
+# DHCP Push options force all traffic through VPN and sets DNS servers
+push "bypass-dhcp"
+push "dhcp-option DNS 8.8.8.8"
+push "dhcp-option DNS 8.8.4.4"
 EOT
 ```
 ### Final touch
