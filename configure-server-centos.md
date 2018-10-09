@@ -1,9 +1,12 @@
+http://www.startupcto.com/server-tech/centos/setting-up-openvpn-server-on-centos
+https://community.openvpn.net/openvpn/wiki/Hardening
+
 ### The goal
 * OpenVPN server  ```centos.artgaw.pl```
 * virtual network ```10.8.0.0/24```
 * server          ```IP:10.8.0.1  OS:CentOS7```
-* client1         ```IP:10.8.0.10 OS:Ubuntu 16.04```
-* client2         ```IP:10.8.0.20 OS:Ubuntu 16.04```
+* client1         ```IP:10.8.0.10 OS:Ubuntu 18.04```
+* client2         ```IP:10.8.0.20 OS:Ubuntu 18.04```
 * client3         ```IP:10.8.0.30 OS:Windows 10```
 
 ### Install all necessary software
@@ -13,10 +16,9 @@ yum -y install openvpn easy-rsa iptables-services
 ### Create certs
 First prepare the tools
 ```sh
-mkdir -p /etc/openvpn/easy-rsa/keys
+mkdir -p /etc/openvpn/easy-rsa
 mkdir    /etc/openvpn/ccd
-cp -rf   /usr/share/easy-rsa/2.0/*               /etc/openvpn/easy-rsa
-cp       /etc/openvpn/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf
+cp -rf   /usr/share/easy-rsa/3.0/* /etc/openvpn/easy-rsa
 ```
 Then customize a vars file ```/etc/openvpn/easy-rsa/vars``` Pay attention for two fildes:
 * KEY_NAME: enter a word ```server``` here. Otherwise the rest of this recipe wont work, because it references to this
@@ -30,32 +32,38 @@ export KEY_EMAIL="you@yourmail.org"
 export KEY_OU="Your Organization Unit"
 export KEY_NAME="server"
 export KEY_CN="centos.artgaw.pl"
+export EASYRSA_KEY_SIZE="4096"
+export EASYRSA_CRL_DAYS="3650"
+export EASYRSA_DIGEST="sha512"
 ```
 ### Build the certs for the server
 ```bash
 cd /etc/openvpn/easy-rsa
 source ./vars
-./easyrsa  build-ca
-./easyrsa  build-server-full server
-./easyrsa  gen-dh
-cd /etc/openvpn/easy-rsa/keys
-cp dh2048.pem ca.crt server.crt server.key /etc/openvpn
+./easyrsa init-pki
+./easyrsa build-ca [nopass]
+./easyrsa gen-dh
+./easyrsa build-server-full server [nopass]
+./easyrsa gen-crl
+openvpn --genkey --secret pki/ta.key
+
+cp ./pki/ca.crt             /etc/openvpn/ca.crt
+cp ./pki/dh.pem             /etc/openvpn/dh.pem
+cp ./pki/issued/server.crt  /etc/openvpn/server.crt
+cp ./pki/private/server.key /etc/openvpn/server.key
+cp ./pki/ta.key             /etc/openvpn/ta.key
+cp ./pki/crl.pem            /etc/openvpn/crl.pem
 ```
 ### Build the certs for clients
 Here the clients are called simply ```client1```, ```client2``` and ```client3```. Consider a meaningfull names instead.
 To generate cert files for clients you just do the following. Leave defaults and agree with all questions.
 ```bash
 cd /etc/openvpn/easy-rsa
-./easyrsa build-client-full client1
-./easyrsa build-client-full client2
-./easyrsa build-client-full client3
-```
-You may need to load variables before issuing ```build-key``` command:
-```bash
 source ./vars
+./easyrsa build-client-full client1 [nopass]
+./easyrsa build-client-full client2 [nopass]
+./easyrsa build-client-full client3 [nopass]
 ```
-Do not issue ```./clean-all``` unless your intention is to start all over again.
-
 ### Ensure that clients will use fixed IP addresses
 Pay attention for the name of files created bellow. It must match the name of Common Name given while creation of client cert files
 ```bash
@@ -78,7 +86,9 @@ dev    tap
 ca     ca.crt
 key    server.key
 cert   server.crt
-dh     dh2048.pem
+dh     dh.pem
+tls-auth ta.key 0
+
 server 10.8.0.0 255.255.255.0
 push   "bypass-dhcp"
 push   "dhcp-option DNS 8.8.8.8"
